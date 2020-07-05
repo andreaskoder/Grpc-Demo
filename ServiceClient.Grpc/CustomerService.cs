@@ -19,7 +19,6 @@ namespace So.GrpcDemo.ServiceClient.Grpc
 
         public async Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
         {
-
             using (var channel = GrpcChannel.ForAddress("http://localhost:5000/"))
             {
                 var service = channel.CreateGrpcService<ICustomerService>();

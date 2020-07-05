@@ -1,0 +1,29 @@
+﻿<Window x:Class="So.GrpcDemo.ClientApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:entities="clr-namespace:So.Demo.Common.Entities;assembly=Common"
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding Source={StaticResource Locator}, Path=MainWindowViewModel}">
+        <!--xmlns:local="clr-namespace:So.GrpcDemo.ClientApp" 
+        -->
+    <Window.Resources>
+        <DataTemplate x:Key="CustomerTemplate" DataType="{x:Type entities:Customer}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Name}"/>
+                <TextBlock 
+                    Text="{Binding Id}"
+                    FontSize="10"
+                    Opacity="0.5"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <TextBlock Text="{Binding Result}"/>
+        <ListBox 
+            ItemsSource="{Binding Customers}"
+            ItemTemplate="{StaticResource CustomerTemplate}"/>
+    </Grid>
+</Window>

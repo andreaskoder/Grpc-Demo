@@ -2,17 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>So.Demo.Grpc.Common</RootNamespace>
+    <AssemblyName>Grpc.FluentApi</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="protobuf-net" Version="3.0.21" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\So.Grpc.FluentApi\So.Grpc.FluentApi.csproj" />
   </ItemGroup>
 
 </Project>

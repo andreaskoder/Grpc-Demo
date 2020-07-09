@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using So.Demo.Common.Entities;
-using So.Demo.Grpc.Common.Requests;
-using So.Demo.Grpc.Common.Services;
+using So.Demo.Common.Requests;
+using So.Demo.Common.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;

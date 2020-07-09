@@ -1,6 +1,6 @@
 ﻿using So.Demo.Common.Entities;
-using So.Demo.Grpc.Common.Requests;
-using So.Demo.Grpc.Common.Responses;
+using So.Demo.Common.Requests;
+using So.Demo.Common.Responses;
 using So.Demo.Grpc.Common.Services;
 using System;
 using System.Collections.Generic;
@@ -10,10 +10,16 @@ using System.Threading.Tasks;
 
 namespace So.Demo.Grpc.Server.Services
 {
-    public class CustomerService : ICustomerService
+    /// <summary>
+    /// Implements the <see cref="ICustomerServiceGrpc"/> interface with gRPC
+    /// </summary>
+    public class CustomerServiceGrpc : ICustomerServiceGrpc
     {
-        public string Name => "Grpc Server";
-
+        /// <summary>
+        /// This implementation generates random customers for test purposes.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
         {
             var customerProperties = GetProperties<Customer>();
@@ -39,6 +45,12 @@ namespace So.Demo.Grpc.Server.Services
                 .ToList();
         }
 
+        /// <summary>
+        /// Populates entity's property with a random value
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="info"></param>
         private void AssignRandomValue<TEntity>(TEntity entity, PropertyInfo info)
         {
             var random = new Random();

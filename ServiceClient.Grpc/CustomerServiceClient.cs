@@ -1,19 +1,24 @@
 ﻿using Grpc.Net.Client;
 using ProtoBuf.Grpc.Client;
 using So.Demo.Grpc.Common;
-using So.Demo.Grpc.Common.Requests;
-using So.Demo.Grpc.Common.Responses;
+using So.Demo.Common.Requests;
+using So.Demo.Common.Responses;
 using So.Demo.Grpc.Common.Services;
 using System.Threading.Tasks;
+using So.Demo.Common.Services;
 
 namespace So.GrpcDemo.ServiceClient.Grpc
 {
-    public class CustomerService : ICustomerService
+    /// <summary>
+    /// Implements the <see cref="ICustomerService"/> interface as a gRPC-client.
+    /// </summary>
+    public class CustomerServiceClient : ICustomerService
     {
-        static CustomerService()
+        static CustomerServiceClient()
         {
             //Allow unencrypted transfer for demo purposes (we don't have a valid certificate)
             GrpcClientFactory.AllowUnencryptedHttp2 = true;
+            //Create models before any attempts to create a service proxy
             ModelCreator.CreateModels();
             _channelOptions = new GrpcChannelOptions
             {
@@ -22,14 +27,19 @@ namespace So.GrpcDemo.ServiceClient.Grpc
         }
 
         private static GrpcChannelOptions _channelOptions;
+
         public string Name => "Grpc client";
 
+        /// <summary>
+        /// Request and response are taken from Common, no mapping required
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
         {
-
             using (var channel = GrpcChannel.ForAddress("http://localhost:5000/", _channelOptions))
             {
-                var service = channel.CreateGrpcService<ICustomerService>();
+                var service = channel.CreateGrpcService<ICustomerServiceGrpc>();
                 return await service.GetCustomersAsync(request);
             }
         }

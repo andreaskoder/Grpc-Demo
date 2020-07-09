@@ -6,13 +6,25 @@ using System.Reflection;
 
 namespace So.Grpc.FluentApi
 {
+    /// <summary>
+    /// Adds classes to the default RuntimTypeModel, so that they could be used by the gRPC serializer
+    /// </summary>
     public static class GrpcTypeModel
     {
+        /// <summary>
+        /// Configures the models.
+        /// </summary>
+        /// <param name="cfg">Add messages and their fields in the config</param>
         public static void Configure(Action<IModelConfigurationOptions> cfg)
         {
             ApplyConfiguration(RuntimeTypeModel.Default, cfg);
         }
 
+        /// <summary>
+        /// A latch that can be used by unit-tests
+        /// </summary>
+        /// <param name="model">A RuntimeTypeModel to configure. Normally a Default model.</param>
+        /// <param name="configureModel">Configuration from client</param>
         internal static void ApplyConfiguration(RuntimeTypeModel model, Action<IModelConfigurationOptions> configureModel)
         {
             var configuration = new ModelConfiguration();
@@ -30,7 +42,7 @@ namespace So.Grpc.FluentApi
                             $"Duplicate manual field number assignment: FieldNumber {property.Number}, Fields 'existingFieldName' and '{property.Name}'");
                     existingFields[property.Number] = property.Name;
                 }
-                if (message.AutoAddFields)
+                if (message.AutoAddFieldsEnabled)
                 {
                     var order = 1;
                     var properties = message.MessageType.GetProperties(BindingFlags.Public | BindingFlags.Instance)

@@ -12,17 +12,80 @@
     <Window.Resources>
         <DataTemplate x:Key="CustomerTemplate" DataType="{x:Type entities:Customer}">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding String1}"/>
                 <TextBlock 
-                    Text="{Binding Id}"
+                    Text="{Binding Int1}"
                     FontSize="10"
                     Opacity="0.5"/>
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <TextBlock Text="{Binding Result}"/>
-        <ListBox 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="128"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Button 
+                Content="10"
+                Command="{Binding RefreshCommand}"
+                CommandParameter="10"/>
+            <Button 
+                Content="100"
+                Command="{Binding RefreshCommand}"
+                CommandParameter="100"/>
+            <Button 
+                Content="1000"
+                Command="{Binding RefreshCommand}"
+                CommandParameter="1000"/>
+            <Button 
+                Content="100000"
+                Command="{Binding RefreshCommand}"
+                CommandParameter="10000"/>
+        </StackPanel>
+        
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="1"
+            Text="Servicename:"/>
+
+        <TextBlock 
+            Grid.Column="1"
+            Grid.Row="1"
+            Text="{Binding ServiceName}"/>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="2"
+            Text="Übertragungsdauer:"/>
+
+        <TextBlock 
+            Grid.Column="1"
+            Grid.Row="2"
+            Text="{Binding Duration}"/>
+
+        <TextBlock
+            Grid.Column="0"
+            Grid.Row="3"
+            Text="Status:"/>
+
+        <TextBlock
+            Grid.Column="1"
+            Grid.Row="3"
+            Text="{Binding Status}"/>
+
+        <ListBox             
+            Grid.Column="0" Grid.ColumnSpan="2"
+            Grid.Row="4"
             ItemsSource="{Binding Customers}"
             ItemTemplate="{StaticResource CustomerTemplate}"/>
     </Grid>

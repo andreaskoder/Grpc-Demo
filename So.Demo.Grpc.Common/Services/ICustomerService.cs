@@ -10,5 +10,7 @@ namespace So.Demo.Grpc.Common.Services
     public interface ICustomerService
     {
         Task<CustomersResponse> GetCustomersAsync(CustomersRequest request);
+
+        string Name { get; }
     }
 }

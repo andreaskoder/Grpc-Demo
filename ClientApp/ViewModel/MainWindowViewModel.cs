@@ -11,22 +11,23 @@ using System.Windows.Threading;
 
 namespace So.GrpcDemo.ClientApp.ViewModel
 {
-    public class MainWindowViewModel: ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         private readonly ICustomerService _customerService;
-        private readonly IMultiplyService _multiplyService;
         private readonly Dispatcher _dispatcher;
 
-        public MainWindowViewModel(ICustomerService customerService, IMultiplyService multiplyService)
+        public MainWindowViewModel(ICustomerService customerService)
         {
             _dispatcher = Dispatcher.CurrentDispatcher;
             _customerService = customerService;
-            _multiplyService = multiplyService;
             Customers = new ObservableCollection<Customer>();
-            Refresh();
+            RefreshCommand = new RelayCommand<string>(Refresh);
+            Refresh(10);
         }
 
         public ObservableCollection<Customer> Customers { get; }
+
+        public string ServiceName => _customerService.Name;
 
         public bool IsBusy
         {
@@ -41,43 +42,67 @@ namespace So.GrpcDemo.ClientApp.ViewModel
             }
         }
         private bool _isBusy;
-        private string _result;
+        private string _duration;
+        private string _status;
 
-        public RelayCommand RefreshCommand { get; }
-        private async Task Refresh()
+        public RelayCommand<string> RefreshCommand { get; }
+
+        private async void Refresh(string amountString)
+        {
+            if (int.TryParse(amountString, out var amount))
+                await Refresh(amount);
+        }
+
+        private async Task Refresh(int amount)
         {
             IsBusy = true;
+            Status = "Busy";
             try
             {
-                var result = await _multiplyService.MultiplyAsync(new MultiplyRequest { X = 3, Y = 14 });
-                Result = $"{result.Result}";
-                
                 Customers.Clear();
-                var request = new CustomersRequest { CustomersCount = 10 };
+                var request = new CustomersRequest { CustomersCount = amount };
+                var stopwatch = Stopwatch.StartNew();
                 var customers = await _customerService.GetCustomersAsync(request);
+                stopwatch.Stop();
                 customers.Customers
                     .ForEach(Customers.Add);
-                Result = $"{customers.Customers.Count}";
+                Duration = $"{stopwatch.ElapsedMilliseconds} ms";
+                Status = "OK";
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
+                Status = ex.Message;
             }
             IsBusy = false;
         }
 
-        public string Result
+        public string Duration
         {
-            get { return _result; }
+            get { return _duration; }
             private set
             {
-                if (_result != value)
+                if (_duration != value)
                 {
-                    _result = value;
+                    _duration = value;
                     RaisePropertyChanged();
                 }
             }
         }
+
+        public string Status
+        {
+            get { return _status; }
+            private set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
 
     }
 }

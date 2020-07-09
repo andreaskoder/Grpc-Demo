@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using Microsoft.Extensions.DependencyInjection;
-using So.Demo.Grpc.Client;
 using So.Demo.Grpc.Common.Services;
 using So.GrpcDemo.ClientApp.ViewModel;
 using So.GrpcDemo.ServiceClient.Grpc;
@@ -24,7 +23,6 @@ namespace So.GrpcDemo.ClientApp
         internal void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<ICustomerService, CustomerService>();
-            services.AddSingleton<IMultiplyService, MultiplyService>();
             services.AddSingleton<MainWindowViewModel>();
         }
 

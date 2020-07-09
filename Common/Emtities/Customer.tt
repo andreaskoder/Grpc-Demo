@@ -1,0 +1,36 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+
+<# 
+	var types = new []
+	{
+		"string",
+		"int",
+		"DateTime",
+		"Guid",
+		"double",
+		"decimal"
+	};
+	var amountEach = 20;
+#>
+
+namespace So.Demo.Common.Entities
+{
+	public class Customer
+	{
+		<#
+			foreach (var type in types)
+			{
+				for (var i = 1; i <= amountEach; i++)
+				{
+WriteLine($"        public {type} {char.ToUpper(type[0])}{type.Substring(1)}{i} {{ get; set; }}");
+				}
+			}
+		#>
+	}
+}

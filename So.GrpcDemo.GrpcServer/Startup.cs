@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProtoBuf.Grpc.Server;
+using ProtoBuf.Meta;
+using So.Demo.Common.Entities;
 using So.Demo.Grpc.Common;
 using So.Demo.Grpc.Server.Services;
 
@@ -17,6 +19,7 @@ namespace So.Demo.Grpc.Server
             services.AddCodeFirstGrpc(config =>
             {
                 config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
+                config.MaxSendMessageSize = 1024 * 1024 * 1024; //1GB
             });
         }
 

@@ -14,7 +14,7 @@ namespace So.Demo.Grpc.Common
                 cfg.AddMessage<Customer>(); // Add Customer with auto-properties
             });
             //Test the model
-            var customer = new Customer { Id = 1, Name = "test" };
+            var customer = new Customer { Int1 = 1, String1 = "test" };
             model.DeepClone(customer);            
         }
     }

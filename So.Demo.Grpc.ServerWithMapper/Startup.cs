@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProtoBuf.Grpc.Server;
 using So.Demo.Common.Entities;
+using So.Demo.Common.Services;
 using So.Demo.Grpc.Common;
 using So.Demo.Grpc.ServerWithMapper.CoreEntities;
 using So.Demo.Grpc.ServerWithMapper.Services;
@@ -27,6 +28,7 @@ namespace So.Demo.Grpc.ServerWithMapper
             {
                 cfg.CreateMap<CustomerEntity, Customer>();
             });
+            services.AddScoped<ICustomerFactory, CustomerFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,27 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProtoBuf.Grpc.Server;
+using Microsoft.Extensions.Logging;
 using So.Demo.Common.Services;
-using So.Demo.Grpc.Common;
-using So.Demo.Grpc.Server.Services;
 
-namespace So.Demo.Grpc.Server
+namespace So.Demo.Json.Server
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            ModelCreator.CreateModels(); //Configure models so that the service could find all schemas
-            services.AddCodeFirstGrpc(config =>
-            {
-                config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
-                config.MaxSendMessageSize = 1024 * 1024 * 1024; //1GB
-            });
-
+            services.AddControllers();
             services.AddScoped<ICustomerFactory, CustomerFactory>();
         }
 
@@ -33,13 +38,14 @@ namespace So.Demo.Grpc.Server
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<CustomerServiceGrpc>();
+                endpoints.MapControllers();
             });
-
         }
     }
 }

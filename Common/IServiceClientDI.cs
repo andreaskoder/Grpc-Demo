@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace So.Demo.Common
 {
@@ -12,6 +13,8 @@ namespace So.Demo.Common
         /// Registers service implementations in for dependency injection
         /// </summary>
         /// <param name="services">Service collection to register into</param>
-        void RegisterClient(IServiceCollection services);
+        /// <param name="configuration">ServiceClient section of the configuration. 
+        /// The client is responsible for getting its configuration parameters from the section.</param>
+        void RegisterClient(IServiceCollection services, IConfiguration configuration);
     }
 }

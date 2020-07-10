@@ -23,7 +23,8 @@ namespace So.Demo.ServiceClientLoader
         public static void LoadServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
             //Check if the assembly path is configured
-            var assemblyFileName = configuration.GetSection("ServiceClient")["AssemblyPath"];
+            var configSection = configuration.GetSection("ServiceClient");
+            var assemblyFileName = configSection["AssemblyPath"];
             if (string.IsNullOrWhiteSpace(assemblyFileName))
                 throw new InvalidOperationException("The assembly path is not defined in configuration. Please supply the AssemblyPath value in the ServiceClient section.");
 
@@ -42,7 +43,7 @@ namespace So.Demo.ServiceClientLoader
             var diInstance = (IServiceClientDI)Activator.CreateInstance(diType);
             
             //Register the client
-            diInstance.RegisterClient(services);
+            diInstance.RegisterClient(services, configSection);
         }
     }
 }

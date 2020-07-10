@@ -26,7 +26,9 @@ namespace So.GrpcDemo.ServiceClient.Grpc
             };
         }
 
+
         private static GrpcChannelOptions _channelOptions;
+        internal static string ServiceUri { get; set; }
 
         public string Name => "Grpc client";
 
@@ -37,7 +39,7 @@ namespace So.GrpcDemo.ServiceClient.Grpc
         /// <returns></returns>
         public async Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
         {
-            using (var channel = GrpcChannel.ForAddress("http://localhost:5000/", _channelOptions))
+            using (var channel = GrpcChannel.ForAddress(ServiceUri, _channelOptions))
             {
                 var service = channel.CreateGrpcService<ICustomerServiceGrpc>();
                 return await service.GetCustomersAsync(request);

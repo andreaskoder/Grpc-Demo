@@ -6,5 +6,7 @@ namespace So.Demo.Common.Responses
     public class CustomersResponse : ResponseBase
     {
         public List<Customer> Customers { get; set; } = new List<Customer>();
+
+        public double Duration { get; set; }
     }
 }

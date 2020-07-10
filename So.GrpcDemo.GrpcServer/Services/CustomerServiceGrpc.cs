@@ -4,6 +4,7 @@ using So.Demo.Common.Responses;
 using So.Demo.Grpc.Common.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace So.Demo.Grpc.Server.Services
         {
             var customerProperties = GetProperties<Customer>();
             var customers = new List<Customer>();
+            var stopwatch = Stopwatch.StartNew();
             for (var i = 1; i < request.CustomersCount + 1; i++)
             {
                 var customer = new Customer();
@@ -31,9 +33,11 @@ namespace So.Demo.Grpc.Server.Services
                     AssignRandomValue(customer, property);
                 customers.Add(customer);
             }
+            stopwatch.Stop();
             return Task.FromResult(new CustomersResponse
             {
-                Customers = customers
+                Customers = customers,
+                Duration = stopwatch.ElapsedMilliseconds
             });
         }
 

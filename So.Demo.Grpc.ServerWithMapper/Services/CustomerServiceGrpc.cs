@@ -6,6 +6,7 @@ using So.Demo.Grpc.Common.Services;
 using So.Demo.Grpc.ServerWithMapper.CoreEntities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace So.Demo.Grpc.ServerWithMapper.Services
         {
             var customerProperties = GetProperties<CustomerEntity>();
             var customers = new List<CustomerEntity>();
+            var stopwatch = Stopwatch.StartNew();
             for (var i = 1; i < request.CustomersCount + 1; i++)
             {
                 var customer = new CustomerEntity();
@@ -40,10 +42,14 @@ namespace So.Demo.Grpc.ServerWithMapper.Services
                     AssignRandomValue(customer, property);
                 customers.Add(customer);
             }
-            return Task.FromResult(new CustomersResponse
+            var response = new CustomersResponse
             {
                 Customers = _mapper.Map<List<Customer>>(customers)
-            });
+            };
+            stopwatch.Stop();
+            response.Duration = stopwatch.ElapsedMilliseconds;
+            return Task.FromResult(response);
+
         }
 
         private List<PropertyInfo> GetProperties<TEntity>()

@@ -44,6 +44,7 @@ namespace So.GrpcDemo.ClientApp.ViewModel
         private bool _isBusy;
         private string _duration;
         private string _status;
+        private string _serverDuration;
 
         public RelayCommand<string> RefreshCommand { get; }
 
@@ -62,11 +63,12 @@ namespace So.GrpcDemo.ClientApp.ViewModel
                 Customers.Clear();
                 var request = new CustomersRequest { CustomersCount = amount };
                 var stopwatch = Stopwatch.StartNew();
-                var customers = await _customerService.GetCustomersAsync(request);
+                var response = await _customerService.GetCustomersAsync(request);
                 stopwatch.Stop();
-                customers.Customers
+                response.Customers
                     .ForEach(Customers.Add);
                 Duration = $"{stopwatch.ElapsedMilliseconds} ms";
+                ServerDuration = $"{response.Duration} ms";
                 Status = "OK";
             }
             catch (Exception ex)
@@ -89,6 +91,20 @@ namespace So.GrpcDemo.ClientApp.ViewModel
                 }
             }
         }
+
+        public string ServerDuration
+        {
+            get { return _serverDuration; }
+            private set
+            {
+                if (_serverDuration != value)
+                {
+                    _serverDuration = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
 
         public string Status
         {

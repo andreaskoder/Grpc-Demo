@@ -13,10 +13,10 @@ namespace So.GrpcDemo.ClientApp.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerServiceClient _customerService;
         private readonly Dispatcher _dispatcher;
 
-        public MainWindowViewModel(ICustomerService customerService)
+        public MainWindowViewModel(ICustomerServiceClient customerService)
         {
             _dispatcher = Dispatcher.CurrentDispatcher;
             _customerService = customerService;

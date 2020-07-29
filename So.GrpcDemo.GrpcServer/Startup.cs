@@ -20,6 +20,7 @@ namespace So.Demo.Grpc.Server
             {
                 config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal;
                 config.MaxSendMessageSize = 1024 * 1024 * 1024; //1GB
+                config.EnableDetailedErrors = true;
             });
 
             services.AddScoped<ICustomerFactory, CustomerFactory>();

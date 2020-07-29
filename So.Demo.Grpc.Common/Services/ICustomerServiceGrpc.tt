@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ import namespace="System.IO" #>
+<#
+
+    string absolutePath = Host.ResolvePath(@"..\..\Common\Services\ICustomerService.cs");
+    var contents = File.ReadAllLines(absolutePath);
+    this.WriteLine("using System.ServiceModel;");
+    foreach (var line in contents)
+    {
+        if (line.Trim().StartsWith("namespace"))
+        {
+            this.WriteLine("namespace So.Demo.Grpc.Common.Services");
+        }
+        else if (line.Trim().StartsWith("public interface"))
+        {
+            this.WriteLine("    [ServiceContract]");
+            this.Write(line);
+            this.WriteLine("Grpc");
+        }
+        else 
+        {
+            this.WriteLine(line);
+        }
+    }
+#>

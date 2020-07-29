@@ -18,7 +18,7 @@ namespace So.Demo.Json.Client
                 throw new InvalidOperationException($"The required 'ServiceUri' configuration value is not supplied");
             CustomerServiceClient.ServiceUri = serviceUri;
 
-            services.AddSingleton<ICustomerService, CustomerServiceClient>();
+            services.AddSingleton<ICustomerServiceClient, CustomerServiceClient>();
         }
     }
 }

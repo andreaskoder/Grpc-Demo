@@ -19,7 +19,13 @@ namespace So.Demo.Grpc.Client
                 throw new InvalidOperationException($"The required 'ServiceUri' configuration value is not supplied");
             CustomerServiceClient.ServiceUri = serviceUri;
 
-            services.AddSingleton<ICustomerService, CustomerServiceClient>();
+            services.AddSingleton<ICustomerServiceClient, CustomerServiceClient>();
+            
+            //Interceptor.ServiceUri = serviceUri;
+            //var interceptor = new Interceptor();
+            //var generator = new ProxyGenerator();
+            //services.AddSingleton(services =>
+            //    generator.CreateInterfaceProxyWithTarget<ICustomerServiceClient>(new ServiceClientDummy(), interceptor));
         }
     }
 }

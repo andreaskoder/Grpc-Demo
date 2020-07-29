@@ -6,13 +6,16 @@ using So.Demo.Common.Responses;
 using So.Demo.Grpc.Common.Services;
 using System.Threading.Tasks;
 using So.Demo.Common.Services;
+using ProtoBuf.Meta;
+using System.Linq;
+using System;
 
 namespace So.GrpcDemo.ServiceClient.Grpc
 {
     /// <summary>
     /// Implements the <see cref="ICustomerService"/> interface as a gRPC-client.
     /// </summary>
-    public class CustomerServiceClient : ICustomerService
+    public class CustomerServiceClient : ICustomerServiceClient
     {
         static CustomerServiceClient()
         {
@@ -20,6 +23,32 @@ namespace So.GrpcDemo.ServiceClient.Grpc
             GrpcClientFactory.AllowUnencryptedHttp2 = true;
             //Create models before any attempts to create a service proxy
             ModelCreator.CreateModels();
+
+            //Save model as a proto file
+            //var customerServiceDescription = new Service { Name = "CustomerService" };
+            //foreach (var method in typeof(ICustomerServiceGrpc).GetMethods())
+            //{
+            //    var outputType = method.ReturnType;
+            //    if (outputType.IsConstructedGenericType)
+            //        outputType = outputType.GetGenericArguments().First();
+            //    var serviceMethod = new ServiceMethod
+            //    {
+            //        InputType = method.GetParameters().First().ParameterType,
+            //        Name = method.Name,
+            //        OutputType = outputType
+            //    };
+            //    customerServiceDescription.Methods.Add(serviceMethod);                    
+            //}
+
+            //var schemaOptions = new SchemaGenerationOptions
+            //{
+            //    Flags = SchemaGenerationFlags.MultipleNamespaceSupport | SchemaGenerationFlags.PreserveSubType,
+            //    Package = "CustomerService",
+            //    Syntax = ProtoSyntax.Proto3,
+            //    Services = { customerServiceDescription }
+            //};
+            //var schema = RuntimeTypeModel.Default.GetSchema(schemaOptions);
+
             _channelOptions = new GrpcChannelOptions
             {
                 MaxReceiveMessageSize = 1024 * 1024 * 1024 // 1GB
@@ -37,13 +66,14 @@ namespace So.GrpcDemo.ServiceClient.Grpc
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
+        public Task<CustomersResponse> GetCustomersAsync(CustomersRequest request)
+            => InvokeFunctionAsync(service => service.GetCustomersAsync(request));
+
+        protected async Task<T> InvokeFunctionAsync<T> (Func<ICustomerServiceGrpc, Task<T>> function)
         {
-            using (var channel = GrpcChannel.ForAddress(ServiceUri, _channelOptions))
-            {
-                var service = channel.CreateGrpcService<ICustomerServiceGrpc>();
-                return await service.GetCustomersAsync(request);
-            }
+            using var channel = GrpcChannel.ForAddress(ServiceUri, _channelOptions);
+            var service = channel.CreateGrpcService<ICustomerServiceGrpc>();
+            return await function.Invoke(service);
         }
     }
 }

@@ -15,4 +15,23 @@
     <ProjectReference Include="..\So.Grpc.FluentApi\So.Grpc.FluentApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Services\ICustomerServiceGrpc.tt">
+      <LastGenOutput>ICustomerServiceGrpc.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Services\ICustomerServiceGrpc.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ICustomerServiceGrpc.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

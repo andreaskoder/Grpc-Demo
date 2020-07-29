@@ -9,7 +9,7 @@ namespace So.Demo.Direct.Client
     /// <summary>
     /// Direct access is supposed to access the db directly, so it just generates the customers and gives them back
     /// </summary>
-    class CustomerServiceClient : ICustomerService
+    class CustomerServiceClient : ICustomerServiceClient
     {
         private readonly ICustomerFactory _customerFactory;
 

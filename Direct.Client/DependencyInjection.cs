@@ -13,7 +13,7 @@ namespace So.Demo.Direct.Client
         public void RegisterClient(IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<ICustomerFactory, CustomerFactory>();
-            services.AddSingleton<ICustomerService, CustomerServiceClient>();
+            services.AddSingleton<ICustomerServiceClient, CustomerServiceClient>();
         }
     }
 }

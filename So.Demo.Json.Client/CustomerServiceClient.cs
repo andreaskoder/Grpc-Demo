@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace So.Demo.Json.Client
 {
-    class CustomerServiceClient : ICustomerService
+    class CustomerServiceClient : ICustomerServiceClient
     {
         public static string ServiceUri { get; set; }
 
